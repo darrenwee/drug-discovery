@@ -1,0 +1,103 @@
+Progress till 27 Sept 2018
+
+1) Generate data 
+
+2) Train model to solve regression problem, predict 1 if protein & ligand id matches
+(also test as a regression problem so it's easier to improve network)
+
+3) Use model to predict score for each lig-protein combination
+Acc@10 test set has 100 correct pairs.
+All ligands are paried to all other proteins. (there are 100 x 100 files)
+
+Pick the 10 pairs with the highest predection (between 0-1)
+Seems that accuracy is ~0.97 at this point.
+
+Only 100 pairs were tested as 100 x 100 files already take 17GB
+
+============================
+
+Data generation
+
+- Ligands
+File: gen_ligand_descriptor.ipynb
+
+Generate voxels for ligands & get the center coordinates of these voxels.
+Each voxel has resolution of 1x1x1 angstrom
+
+The whole 4d structure is 24x24x24x8.
+There are 8 3D structures of size 24x24x24.
+(8 features, hydrophobic + some others. See htmd for more info)
+
+These structures + centers are saved as pickle files.
+ligand_data.csv contains the paths of the pickle files + the ligand's id.
+
+There are 3000 pickle files, ~3.5GB
+
+
+- Ligand + Protein pairs (for regression training & testing)
+File: gen_protein_ligand_descriptors_regression.ipynb
+
+Using the center coordinates of ligands, generate voxels for proteins.
+Then, stack the protein & ligand into a 24x24x24x16 structure.
+(protein is on top of ligand)
+
+The script currently generates the following pairs:
+4 random proteins (excluding actual match)
+1 protein actual match
+
+The 24x24x24x16 structure is saved as a npy file.
+The npy path, lig_id, protein_id, & score (1 if lig_id == protein_id, 0 otherwise)
+are saved into the following csvs.
+
+train_lig_pro_pairs.csv
+test_lig_pro_pairs.csv 
+
+There are 15000 npy files, ~25GB
+
+The data is split before selecting pairs.
+Train test split of 90%, there are 300 unique ligands in the test set.
+
+
+- Ligand + Protein pairs (for acc@10 testing)
+File: gen_protein_ligand_descriptors_acc10.ipynb
+
+From test set, pick 100 unique ligands.
+Create lig-protein pairs amongst the 100 ligands.
+This generates 10,000 pairs. (~17GB)
+
+============================
+
+Regression Training & Testing
+File: train_oversampling.ipynb
+
+Train a regression model, which predicts a value between 0 & 1.
+1 is the confidence in the protein being a good match with the ligand.
+It takes in a 24x24x24x16 structure, consisting of protein features stacked on ligand features.
+
+The last layer is a sigmoid, to fix output between 0 & 1.
+
+Oversampling is used to ensure there are the same number of matches & non-matches during training.
+This prevents the model from learning 0 & get stuck at being 80% correct.
+
+Current Model architecutre:
+Conv3D(96, 3x3, relu)
+BatchNorm()
+Conv3D(128, 3x3, relu)
+BatchNorm()
+Conv3D(256, 3x3, relu)
+BatchNorm()
+GlobalAvgPool()
+Dense(1, sigmoid)
+
+TODO: refine model architecture, 
+Try to reduce memory consumption with squeeze excitation or googlenet architecture
+
+=============================
+
+Acc@10 testing
+File: test_acc10.ipynb
+
+For each ligand, guess compatibility with proteins
+If actual protein is in the top-10, +1 to matches@10.
+
+Accuracy@10 = matches@10 / num_ligands
