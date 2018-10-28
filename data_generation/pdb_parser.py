@@ -2,6 +2,7 @@ from htmd.ui import Molecule
 import htmd.molecule.util
 import htmd.molecule.voxeldescriptors
 import numpy as np
+from pathlib import Path
 
 def pdb_to_features(filepath):
     mol = _pdb_to_molecule(filepath)
@@ -21,19 +22,20 @@ def _test_pdb_to_molecule(filepath):
 
 
 def _marshall_test_pdb(filepath):
-    with open(filepath, 'r') as file:
-        strline_L = file.readlines()
-    out_contents = []
-    for i, strline in enumerate(strline_L):
-        stripped_line = strline.strip()
-        x, y, z, atom = stripped_line.split('\t')
-        pdb_line = 'ATOM  %5s%19s%8s%8s%8s%22s%2s' % (i, '', x, y, z, '', _obscured_atom_type_to_element(atom))
-        out_contents.append(pdb_line)
-
     out_file = str(filepath).replace('.pdb', 't.pdb')
-    with open(out_file, 'w') as f:
-        for item in out_contents:
-            f.write("%s\n" % item)
+    if not Path(out_file).exists():
+        with open(filepath, 'r') as file:
+            strline_L = file.readlines()
+        out_contents = []
+        for i, strline in enumerate(strline_L):
+            stripped_line = strline.strip()
+            x, y, z, atom = stripped_line.split('\t')
+            pdb_line = 'ATOM  %5s%19s%8s%8s%8s%22s%2s' % (i, '', x, y, z, '', _obscured_atom_type_to_element(atom))
+            out_contents.append(pdb_line)
+
+        with open(out_file, 'w') as f:
+            for item in out_contents:
+                f.write("%s\n" % item)
 
     return out_file
 

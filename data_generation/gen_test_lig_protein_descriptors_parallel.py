@@ -20,7 +20,7 @@ def imap_unordered_bar(func, args):
     p = Pool()
     res_list = []
     with tqdm(total = len(args), file=sys.stdout) as pbar:
-        for i, res in tqdm(enumerate(p.imap_unordered(func, args))):
+        for i, res in enumerate(p.imap_unordered(func, args)):
             pbar.update()
             res_list.append(res)
     pbar.close()
