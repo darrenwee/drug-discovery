@@ -14,7 +14,7 @@ logger.setLevel(logging.CRITICAL)
 
 ### Generate the protein-ligand complexes
 
-base_dest = './processed_data/eval/test_acc10_x'
+base_dest = './processed_data/eval/test_acc10_2'
 Path(base_dest).mkdir(exist_ok=True, parents=True)
 df = pd.read_csv('./data/csv/ligand_data_eval.csv')
 idxs = sorted(list(df.id.unique()))
@@ -47,7 +47,7 @@ for lig_idx in tqdm(idxs, file=sys.stdout):
         ligs.append(lig_idx)
         proteins.append(pro_idx)
 
-csv_dest = f'./data/csv/test_acc10.csv'
+csv_dest = f'./data/csv/test_acc10_2.csv'
 pro_lig_record = pd.DataFrame({'lig_id': ligs, 'pro_id': proteins, 
                                'dest': dests,}, index=None)
 pro_lig_record.to_csv(csv_dest, index=None)
