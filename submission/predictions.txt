@@ -1,0 +1,1 @@
+pro_id lig1_id lig2_id lig3_id lig4_id lig5_id lig6_id lig7_id lig8_id lig9_id lig10_id
