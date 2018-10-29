@@ -76,7 +76,7 @@ for mess in mess_of_outputs:
     all_ligs.extend(mess[1])
     all_proteins.extend(mess[2])
 
-csv_dest = f'./data/csv/test_acc10_2.csv'
+csv_dest = f'./data/csv/eval_acc10_2.csv'
 pro_lig_record = pd.DataFrame({'lig_id': all_ligs, 'pro_id': all_proteins, 
                                'dest': all_dests,}, index=None)
 pro_lig_record.to_csv(csv_dest, index=None)
