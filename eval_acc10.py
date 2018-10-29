@@ -3,6 +3,7 @@ import keras
 from keras.models import load_model
 import numpy as np
 from tqdm import tqdm
+from submission.output_formatter import write_predictions_to_file
 
 def generate_predictions(df_path, model_path, batch_size=800, testing=False, n_channels=4, test_limit=5):
     df = pd.read_csv(df_path)
@@ -50,6 +51,9 @@ def _test():
     print(score/len(predictions))
 
 if __name__ == "__main__":
-    _test()
-    #df_path = './data/csv/eval_acc10_2.csv'
-    #model_path = './models/.h5'
+    df_path = './data/csv/eval_acc10_2.csv'
+    model_path = './models/final_model.h5'
+
+    predictions = generate_predictions(df_path, model_path)
+    write_predictions_to_file(predictions)
+
