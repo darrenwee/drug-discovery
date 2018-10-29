@@ -60,7 +60,7 @@ def _molecule_to_features(mol, centers=[]):
                 for iz in range(24):
                     centers.append([xx + ix, yy + iy, zz + iz])
     features, centers = htmd.molecule.voxeldescriptors.getVoxelDescriptors(mol, usercenters=np.array(centers),
-                                                                           voxelsize=1)
+                                                                           voxelsize=1, method='CUDA')
     features = features.reshape(24, 24, 24, features.shape[1])
     return features, centers
 
