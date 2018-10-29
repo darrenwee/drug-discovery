@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 from submission.output_formatter import write_predictions_to_file
 
-def generate_predictions(df_path, model_path, batch_size=800, testing=False, n_channels=4, test_limit=5):
+def generate_predictions(df_path, model_path, batch_size=150, testing=False, n_channels=4, test_limit=5):
     df = pd.read_csv(df_path)
     model = load_model(model_path)
 
@@ -32,7 +32,7 @@ def generate_predictions(df_path, model_path, batch_size=800, testing=False, n_c
 
     return predictions
 
-def _test():
+def _test_predictions():
     # for testing the prediction generator
 
     df_path = './data/csv/test_acc10_2_300.csv'
@@ -50,7 +50,15 @@ def _test():
     
     print(score/len(predictions))
 
+def _test_submit():
+    df_path = './data/csv/test_acc10_2_300.csv'
+    model_path = './models/final_model.h5'
+
+    predictions = generate_predictions(df_path, model_path, 150)
+    write_predictions_to_file(predictions)
+
 if __name__ == "__main__":
+
     df_path = './data/csv/eval_acc10_2.csv'
     model_path = './models/final_model.h5'
 
