@@ -34,10 +34,10 @@ def generate_predictions(df_path, model_path, batch_size=800, testing=False, n_c
 def _test():
     # for testing the prediction generator
 
-    df_path = './data/csv/test_acc10_300.csv'
-    model_path = './models/try_epochs_16.h5'
+    df_path = './data/csv/test_acc10_2_300.csv'
+    model_path = './models/finals/final_epochs_11.h5'
 
-    predictions = generate_predictions(df_path, model_path, 200, testing=True, n_channels=2)
+    predictions = generate_predictions(df_path, model_path, 150, testing=True, n_channels=4, test_limit=500)
 
     score = 0
     for lig_id, probs in predictions.items():
@@ -50,6 +50,6 @@ def _test():
     print(score/len(predictions))
 
 if __name__ == "__main__":
-    # _test()
-    df_path = './data/csv/eval_acc10_2.csv'
-    model_path = './models/.h5'
+    _test()
+    #df_path = './data/csv/eval_acc10_2.csv'
+    #model_path = './models/.h5'
