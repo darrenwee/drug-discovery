@@ -21,6 +21,7 @@ Unfortunately, it does not seem to work with CUDA.
 Next, generate protein-ligand pairs for acc@10 testing using 'gen_protein_ligand2_descriptors_acc10.py'.
 
 Finally, train the model using train_final.ipynb
+We selected the 6th or so model to use as our final model.
 
 Testing (acc@10):
 Please change the 'method' parameter in line 66 of 'pdb_parser.py' to 'CUDA' (it is faster for this section of the code)
