@@ -5,7 +5,7 @@ import numpy as np
 from tqdm import tqdm
 from submission.output_formatter import write_predictions_to_file
 
-def generate_predictions(df_path, model_path, batch_size=150, testing=False, n_channels=4, test_limit=5, validation=False):
+def generate_predictions(df_path, model_path, batch_size=150, testing=False, n_channels=4, test_limit=5):
     df = pd.read_csv(df_path)
     model = load_model(model_path)
 
@@ -23,9 +23,6 @@ def generate_predictions(df_path, model_path, batch_size=150, testing=False, n_c
         probs = model.predict(X, batch_size=batch_size)
         probs = probs.flatten()
 
-        # validation lig_ids have an offset of +2700
-        if validation:
-            lig_id -= 2700
         predictions[lig_id] = probs
 
         if testing:
@@ -39,9 +36,9 @@ def _test_predictions():
     # for testing the prediction generator
 
     df_path = './data/csv/test_acc10_2_300.csv'
-    model_path = './models/finals/final_epochs_11.h5'
+    model_path = './models/finals/final_model.h5'
 
-    predictions = generate_predictions(df_path, model_path, 150, testing=True, n_channels=4, test_limit=500, validation=True)
+    predictions = generate_predictions(df_path, model_path, 150, testing=True, n_channels=4, test_limit=500)
 
     score = 0
     for lig_id, probs in predictions.items():
@@ -54,18 +51,18 @@ def _test_predictions():
     print(score/len(predictions))
 
 def _test_submit():
-    # for testing the submit function
     df_path = './data/csv/test_acc10_2_300.csv'
     model_path = './models/final_model.h5'
 
-    predictions = generate_predictions(df_path, model_path, 150, validation=True)
-    write_predictions_to_file(predictions)
+    predictions = generate_predictions(df_path, model_path, 150)
+    write_predictions_to_file(predictions, out_filename='val_predictions.txt')
 
 if __name__ == "__main__":
+    _test_submit()
 
-    df_path = './data/csv/eval_acc10_2.csv'
-    model_path = './models/final_model.h5'
+    #df_path = './data/csv/eval_acc10_2.csv'
+    #model_path = './models/final_model.h5'
 
-    predictions = generate_predictions(df_path, model_path, 350)
-    write_predictions_to_file(predictions)
+    #predictions = generate_predictions(df_path, model_path, 350)
+    #write_predictions_to_file(predictions)
 
