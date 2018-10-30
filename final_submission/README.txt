@@ -1,9 +1,12 @@
 README
 
-Recommended requirements:
+Requirements:
 300GB of (fast) storage
 Tesla-generation GPUs (for training)
 72 core CPU (for generating features faster)
+
+Non-exhaustive list of libraries used:
+jupyter lab, tqdm, keras, htmd, numpy, seaborn, pandas
 
 Data:
 Please create a folder called 'data'.
