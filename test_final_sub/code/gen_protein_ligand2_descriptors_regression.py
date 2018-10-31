@@ -17,6 +17,11 @@ logger.setLevel(logging.CRITICAL)
 This script creates 24x24x24x4 descriptors from protein-ligand pairs, used for regression training
 It uses the coordinates from the ligand descriptors.
 Train & test splitting of the dataset also occurs here.
+
+Note that we did not add support for a progressbar here.
+Please observe the folders where the pairs are created to have a sense of the progress.
+run ls -l | wc -l at ./data/processed_data/pro_lig_2_voxels/test or ...../train.
+There should be about 300*5 for test & 2700*5 for train
 '''
 
 np.random.seed = 1
@@ -43,7 +48,7 @@ def gen_data(df, base_dest):
             lig_features, centers = pk.load(f)
 
         for pidx in protein_idxs:
-            mol = Molecule('./data/training_data/'+str(pidx).zfill(4)+'_pro_cg.pdb', keepaltloc='all')
+            mol = Molecule('./data/simplified_train_data/'+str(pidx).zfill(4)+'_pro_cg.pdb', keepaltloc='all')
             
             # same process as creating ligand features (see gen_liga_descriptors_2 for more info)
             pro_features, _ = getVoxelDescriptors(mol, usercenters=np.array(centers), voxelsize=1, method='CUDA')

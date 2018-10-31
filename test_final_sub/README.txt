@@ -14,27 +14,36 @@ Dump the testing data (pdbs) into 'data/testing_data'
 Dump the training data (pdbs) into 'data/training_data'
 Please run the script, simply_training_data.py in root folder
 
-Training & Validation (regression):
-Please change the 'method' parameter in line 66 of 'pdb_parser.py' to 'CUDA' (it is faster for this section of the code)
+Training & Validation:
 First, generate training ligand data using the file 'gen_ligand2_descriptors.py'.
-Next, generate protein-ligand pairs for regression training using 'gen_protein_ligand2_descriptors_regression.py'.
 
-Please change the 'method' parameter in line 66 of 'pdb_parser.py' to 'C'.
-We use a parallized implementation of our code to reduce the time required. 
-Unfortunately, it does not seem to work with CUDA.
+Next, generate protein-ligand pairs for regression training using 'gen_protein_ligand2_descriptors_regression.py'.
+Note that we did not include a progress bar for this script. 
+Do read the comments in the script for a suggestion on how to manually monitor progress.
+
 Next, generate protein-ligand pairs for acc@10 testing using 'gen_protein_ligand2_descriptors_acc10.py'.
+Please read the notes in the file before running it, some strings are hardcoded and have to be uncommented.
+We use parallized code + CUDA for this part of the code.
+If your number of cores is too high, there might be OOM errors in CUDA.
+One core takes about 70mb of VRAM. Do pop into the code and reduce the core usage count if required, or contact us for help.
 
 Finally, train the model using train_final.ipynb
 We selected the 6th or so model to use as our final model.
 
-Testing (acc@10):
-Please change the 'method' parameter in line 66 of 'pdb_parser.py' to 'CUDA' (it is faster for this section of the code)
-First, generate training ligand data using the file 'gen_test_ligand2_descriptors.py'.
+Testing:
+First, marshal the test pdbs using the file, 'marshal_test_pdbs.py'.
 
-Please change the 'method' parameter in line 66 of 'pdb_parser.py' to 'C'.
-We use a parallized implementation of our code to reduce the time required. 
-Unfortunately, it does not seem to work with CUDA.
+Next, generate training ligand data using the file 'gen_test_ligand2_descriptors.py'.
+We suggest piping stderr to some other destination. 
+The marshalled pdb files lack some information. hmtd will print warnings that block our progress bar.
+
 Next, generate protein-ligand pairs for acc@10 testing using 'gen_protein_ligand2_descriptors_acc10.py'.
+We suggest piping stderr to some other destination. 
+Please read the notes in the file before running it, some strings are hardcoded and have to be swapped.
+We use parallized code + CUDA for this part of the code.
+If your number of cores is too high, there might be OOM errors in CUDA.
+One core takes about 70mb of VRAM. Do pop into the code and reduce the core usage count if required, or contact us for help.
+
 
 Generating Accuracy Scores:
 Use the script, 'eval_acc10.py' to generate predictions.

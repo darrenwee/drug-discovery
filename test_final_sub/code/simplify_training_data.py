@@ -6,7 +6,7 @@ from tqdm import tqdm
 dest_root = './data/simplified_train_data'
 
 Path(dest_root).mkdir(exist_ok=True)
-src_root = Path('../data/training_data/')
+src_root = Path('./data/training_data/')
 pdbs = list(src_root.glob('*.pdb'))
 
 def replace_non_C_with_N(pdb):
