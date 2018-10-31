@@ -12,7 +12,7 @@ Data:
 Please create a folder called 'data'.
 Dump the testing data (pdbs) into 'data/testing_data'
 Dump the training data (pdbs) into 'data/training_data'
-Please run the script, simply_training_data.py in root folder
+Please run the script, simplify_training_data.py in root folder
 
 Training & Validation:
 First, generate training ligand data using the file 'gen_ligand2_descriptors.py'.
@@ -27,8 +27,9 @@ We use parallized code + CUDA for this part of the code.
 If your number of cores is too high, there might be OOM errors in CUDA.
 One core takes about 70mb of VRAM. Do pop into the code and reduce the core usage count if required, or contact us for help.
 
-Finally, train the model using train_final.ipynb
-We selected the 6th or so model to use as our final model.
+Finally, train the model using train_final.ipynb.
+Ensure that it is in the same level as your data folder, or change the paths of the csvs in the ipynb.
+We selected the 6th or so model to use as our final model. (lowest loss, and have yet to show signs of overfitting)
 
 Testing:
 First, marshal the test pdbs using the file, 'marshal_test_pdbs.py'.
@@ -44,8 +45,11 @@ We use parallized code + CUDA for this part of the code.
 If your number of cores is too high, there might be OOM errors in CUDA.
 One core takes about 70mb of VRAM. Do pop into the code and reduce the core usage count if required, or contact us for help.
 
-
 Generating Accuracy Scores:
 Use the script, 'eval_acc10.py' to generate predictions.
 Use the script, 'calc_top_3_10_acc.py' to get acc@3 & acc@10 scores.
 
+
+Extra:
+Exploratory data analysis can be found in the exploratory folder.
+The ipynbs are self explanatory.
