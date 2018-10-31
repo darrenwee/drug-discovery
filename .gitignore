@@ -110,3 +110,6 @@ processed_data
 
 models/try*
 models/finals
+
+test_final_sub/data
+test_final_sub/processed_data
