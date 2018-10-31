@@ -20,31 +20,6 @@ from tqdm import *
 This script creates 24x24x24x4 descriptors from protein-ligand pairs, used for acc@10 calculation
 All possible pairs of proteins/ligands are generated
 '''
-### Generate the protein-ligand pairs
-
-#### TODO ####
-# please uncomment the right blocks of code accordingly
-# is_val = True
-# base_dest = './processed_data/test_acc10_2'
-# Path(base_dest).mkdir(exist_ok=True, parents=True)
-# df = pd.read_csv('./data/csv/val_lig_2_pro_pairs.csv')
-# csv_dest = f'./data/csv/acc10_2.csv'
-# lig_src_base = './processed_data/ligands_2/'
-# protein_src_base = './data/training_data/'
-
-# for test
-is_val = False
-base_dest = './processed_data/eval/test_acc10_2'
-Path(base_dest).mkdir(exist_ok=True, parents=True)
-df = pd.read_csv('./data/csv/ligand_2_data_eval.csv')
-lig_src_base = './processed_data/eval/ligands_2/'
-csv_dest = f'./data/csv/eval_acc10_2.csv'
-protein_src_base = './data/testing_data/'
-
-if is_val:
-    idxs = sorted(list(df.lig_id.unique()))
-else:
-    idxs = sorted(list(df.id.unique()))
 
 def imap_unordered_bar(func, args):
     p = Pool()
@@ -58,6 +33,26 @@ def imap_unordered_bar(func, args):
     p.join()
     return res_list
 
+### Generate the protein-ligand pairs
+
+# please change the base dest & csv path accordingly, when generating validation data & test data
+
+is_val = False
+# for val
+# base_dest = './processed_data/test_acc10_2'
+# Path(base_dest).mkdir(exist_ok=True, parents=True)
+# df = pd.read_csv('./data/csv/ligand_2_data.csv')
+# csv_dest = f'./data/csv/acc10_2.csv'
+# lig_src_base = './processed_data/ligands_2/'
+
+# for test
+base_dest = './processed_data/eval/test_acc10_2'
+Path(base_dest).mkdir(exist_ok=True, parents=True)
+df = pd.read_csv('./data/csv/ligand_2_data_eval.csv')
+lig_src_base = './processed_data/eval/ligands_2/'
+csv_dest = f'./data/csv/eval_acc10_2.csv'
+
+idxs = sorted(list(df.id.unique()))
 
 # process is the same as generating the ligand-protein pairs for regression training
 
@@ -73,7 +68,7 @@ def gen(lig_idx):
     for pro_idx in idxs:
         dest = base_dest + '/' + str(pro_idx).zfill(4) + '_pro_' + str(lig_idx).zfill(4) + '_lig.npy'
         
-        protein_path = protein_src_base +str(pro_idx).zfill(4)+'_pro_cg.pdb'
+        protein_path = './data/testing_data/'+str(pro_idx).zfill(4)+'_pro_cg.pdb'
         
         if is_val:
             pro_features, _ = pdb_to_features(protein_path, centers)

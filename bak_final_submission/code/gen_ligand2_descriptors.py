@@ -6,7 +6,6 @@ import pickle as pk
 import pandas as pd
 from tqdm import tqdm
 from pdb_parser import pdb_to_features
-import sys
 
 import logging
 logger = logging.getLogger()
@@ -24,7 +23,7 @@ Path(ligand_root).mkdir(exist_ok = True, parents=True)
 csv_root = './data/csv/'
 Path(csv_root).mkdir(exist_ok = True, parents=True)
 
-raw_ligand_paths = sorted(list(Path('./data/simplified_train_data').glob('*lig_cg.pdb')))
+raw_ligand_paths = sorted(list(Path('./data/training_data').glob('*lig_cg.pdb')))
 
 dests = []
 idxs = []
